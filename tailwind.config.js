@@ -4,10 +4,10 @@ module.exports = {
     extend: {
       colors: {
         smoothblue: '#F7FAFC',
+        goDarkBlue: '#0A1B58',
+        goGold: '#FFBE17',
       },
-      fontFamily: {
-        heading: 'Montserrat',
-      },
+      fontFamily: {},
     },
   },
   plugins: [],

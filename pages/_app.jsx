@@ -1,11 +1,17 @@
-import GetIdProvider from '../context/GetId';
+import { ToastContainer } from 'react-toastify';
 import '../styles/globals.css';
+import 'react-toastify/dist/ReactToastify.min.css';
+import { ActiveContentProvider } from '../context/getActiveContent';
+import { CounterProvider } from '../context/counterContext';
 
 function MyApp({ Component, pageProps }) {
   return (
-    <GetIdProvider>
-      <Component {...pageProps} />
-    </GetIdProvider>
+    <ActiveContentProvider>
+      <CounterProvider>
+        <Component {...pageProps} />
+        <ToastContainer theme="colored" autoClose={3000} />
+      </CounterProvider>
+    </ActiveContentProvider>
   );
 }
 
