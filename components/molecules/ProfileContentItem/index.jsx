@@ -1,9 +1,11 @@
-import Image from 'next/image';
-import Thumbnail from '../../../public/images/thumbnail.jpg';
+/* eslint-disable @next/next/no-img-element */
 import { FaEdit } from 'react-icons/fa';
 import { MdDeleteForever } from 'react-icons/md';
 import { useContext } from 'react';
 import { ActiveContentCtx } from '../../../context/getActiveContent';
+import FBThumbnail from '../../../public/images/thumbnail.png';
+
+const ROOT_IMG = process.env.NEXT_PUBLIC_IMG;
 
 const ProfileContentItem = (props) => {
   const { id_content, url, title, thumbnail, onCloseEdit } = props;
@@ -17,8 +19,13 @@ const ProfileContentItem = (props) => {
 
   return (
     <div className="w-64 h-36 flex flex-col gap-1 relative rounded-lg overflow-hidden">
-      <Image src={Thumbnail} alt="Thumbnail video" objectFit="cover" layout="fill" />
-      <h3 className="absolute top-0 left-0 w-full h-full bg-goDarkBlue/70 text-goGold px-4 transition ease-in-out duration-150 flex justify-center items-center opacity-0 hover:opacity-100 font-semibold text-md cursor-pointer">
+      <img
+        src={thumbnail ? `${ROOT_IMG}/thumbnail/${thumbnail}` : FBThumbnail}
+        alt="Thumbnail video"
+        objectFit="cover"
+        layout="fill"
+      />
+      <h3 className="absolute top-0 left-0 w-full h-full bg-goDarkBlue/90 text-goGold px-4 transition ease-in-out duration-150 flex justify-center items-center opacity-0 hover:opacity-100 font-semibold text-md cursor-pointer">
         <p>{title}</p>
         <div className="absolute top-4 right-4 flex gap-1">
           <FaEdit size={18} className="text-blue-500" onClick={() => modalEdit(id_content)} />

@@ -33,7 +33,9 @@ const Discover = ({ contents, creator }) => {
     getUrlContent(url);
 
     // counter
-    if (creator.id_creator !== idCreator) {
+    if (creator.status === 'N') {
+      return;
+    } else if (creator.id_creator !== idCreator) {
       await setCounterWatch(creator.id_creator);
       await setCounterSeen(idCreator);
     }

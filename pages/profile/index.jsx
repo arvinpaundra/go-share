@@ -1,6 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
 import Link from 'next/link';
-import Image from 'next/image';
-import PPFallback from '../../public/images/pp-fallback.jpg';
 import { useState } from 'react';
 import ProfilePoints from '../../components/organisms/ProfilePoints';
 import jwtDecode from 'jwt-decode';
@@ -10,6 +9,10 @@ import NewContentModal from '../../components/organisms/NewContentModal';
 import Head from 'next/head';
 import ProfileContents from '../../components/organisms/ProfileContents';
 import EditContentModal from '../../components/organisms/EditContentModal';
+import { AiFillEdit } from 'react-icons/ai';
+import PPImage from '../../public/images/pp-fallback.jpg';
+
+const ROOT_IMG = process.env.NEXT_PUBLIC_IMG;
 
 const Profile = ({ creator }) => {
   const [isOpenAdd, onCloseAdd] = useState(false);
@@ -63,7 +66,18 @@ const Profile = ({ creator }) => {
       <main>
         <div className="rounded-bl-2xl rounded-br-2xl shadow-xl absolute top-16 left-0 w-full drop-shadow-lg z-30 h-24 bg-goDarkBlue flex justify-between">
           <div className="absolute top-[25%] left-24 w-36 h-36 rounded-full overflow-hidden drop-shadow-md bg-white">
-            <Image src={PPFallback} alt="Profile Image" />
+            <img
+              src={creator.thumbnail ? `${ROOT_IMG}/profiles/${creator.thumbnail}` : PPImage}
+              alt="Profile Image"
+            />
+
+            <label
+              htmlFor="profile"
+              className="absolute top-0 left-0 w-full h-full opacity-0 hover:opacity-100 flex justify-center items-center hover:bg-goDarkBlue/80 transition ease-in-out duration-150 cursor-pointer"
+            >
+              <AiFillEdit color="white" size={24} />
+            </label>
+            <input type="file" name="thumbnail" id="profile" className="hidden" />
           </div>
 
           <h2 className="absolute bottom-2 left-64 font-bold text-3xl text-white italic">
