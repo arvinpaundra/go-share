@@ -11,12 +11,15 @@ import ProfileContents from '../../components/organisms/ProfileContents';
 import EditContentModal from '../../components/organisms/EditContentModal';
 import { AiFillEdit } from 'react-icons/ai';
 import PPImage from '../../public/images/pp-fallback.jpg';
+import { FaEdit } from 'react-icons/fa';
+import EditProfileModal from '../../components/organisms/EditProfileModal';
 
 const ROOT_IMG = process.env.NEXT_PUBLIC_IMG;
 
 const Profile = ({ creator }) => {
   const [isOpenAdd, onCloseAdd] = useState(false);
   const [isOpenEdit, onCloseEdit] = useState(false);
+  const [isOpenEditProfile, onCloseEditProfile] = useState(false);
   const [fetchContents, setFetchContents] = useState(true);
 
   const router = useRouter();
@@ -69,20 +72,20 @@ const Profile = ({ creator }) => {
             <img
               src={creator.thumbnail ? `${ROOT_IMG}/profiles/${creator.thumbnail}` : PPImage}
               alt="Profile Image"
+              className="w-full h-full object-cover"
             />
-
-            <label
-              htmlFor="profile"
-              className="absolute top-0 left-0 w-full h-full opacity-0 hover:opacity-100 flex justify-center items-center hover:bg-goDarkBlue/80 transition ease-in-out duration-150 cursor-pointer"
-            >
-              <AiFillEdit color="white" size={24} />
-            </label>
-            <input type="file" name="thumbnail" id="profile" className="hidden" />
           </div>
 
-          <h2 className="absolute bottom-2 left-64 font-bold text-3xl text-white italic">
-            {creator.fullname}
-          </h2>
+          <div className="absolute bottom-2 left-64 flex gap-2">
+            <h2 className="font-bold text-3xl text-white italic">{creator.fullname}</h2>
+            <FaEdit
+              color="#FF7917"
+              className="text-blue-500 cursor-pointer"
+              title="Edit profile"
+              size={22}
+              onClick={() => onCloseEditProfile((prevState) => !prevState)}
+            />
+          </div>
 
           <ProfilePoints id_creator={creator.id_creator} />
         </div>
@@ -102,6 +105,11 @@ const Profile = ({ creator }) => {
         onCloseAdd={onCloseAdd}
         id_creator={creator.id_creator}
         setFetchContents={setFetchContents}
+      />
+
+      <EditProfileModal
+        isOpenEditProfile={isOpenEditProfile}
+        onCloseEditProfile={onCloseEditProfile}
       />
 
       <EditContentModal

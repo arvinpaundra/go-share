@@ -1,7 +1,10 @@
-import { useState, useRef, useEffect, useContext, useCallback } from 'react';
+/* eslint-disable @next/next/no-img-element */
+import { useState, useEffect, useContext, useCallback } from 'react';
 import { toast } from 'react-toastify';
 import { ActiveContentCtx } from '../../../context/getActiveContent';
 import { getDetailContentAPI, setEditContent } from '../../../services/contents';
+
+const IMG_URL = process.env.NEXT_PUBLIC_IMG;
 
 const EditContentForm = ({ setFetchContents, onCloseEdit }) => {
   const { idContent } = useContext(ActiveContentCtx);
@@ -11,13 +14,10 @@ const EditContentForm = ({ setFetchContents, onCloseEdit }) => {
     url: '',
     thumbnail: null,
   });
-  const [error, setError] = useState(null);
-  const [title, setTitle] = useState();
-  const [url, setUrl] = useState('');
-  const [thumbnail, setThumbnail] = useState();
 
-  const titleRef = useRef('');
-  const urlRef = useRef('');
+  const [imagePreview, setImagePreview] = useState(null);
+
+  const [error, setError] = useState(null);
 
   const getDetailContent = useCallback(async (id_content) => {
     try {
@@ -37,31 +37,21 @@ const EditContentForm = ({ setFetchContents, onCloseEdit }) => {
     getDetailContent(idContent);
   }, [getDetailContent, idContent]);
 
-  useEffect(() => {
-    titleRef.current = title;
-    urlRef.current = url;
-  });
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     const data = new FormData();
 
-    data.append('title', titleRef);
-    data.append('url', urlRef);
-    data.append('thumbnail', thumbnail);
+    data.append('title', content.title);
+    data.append('url', content.url);
+    data.append('thumbnail', content.thumbnail);
 
     onCloseEdit(false);
 
-    for (let value of data.values()) {
-      console.log('data: ', value);
-    }
-
-    if (!titleRef || !urlRef || !thumbnail) {
+    if (!content.title || !content.url || !content.thumbnail === null) {
       toast.error('Field can not be empty.');
     } else {
-      return;
-      const response = await setEditContent(data);
+      const response = await setEditContent(data, idContent);
 
       if (response.error) {
         toast.error(response.message);
@@ -83,7 +73,12 @@ const EditContentForm = ({ setFetchContents, onCloseEdit }) => {
           placeholder="Enter Title"
           className="border-l-4 border-goDarkBlue rounded-lg focus:outline-0 px-4 py-2 placeholder:font-medium shadow-lg"
           value={content.title}
-          onChange={(event) => setTitle(event.target.value)}
+          onChange={(event) =>
+            setContent({
+              ...content,
+              title: event.target.value,
+            })
+          }
         />
         <input
           type="text"
@@ -93,26 +88,48 @@ const EditContentForm = ({ setFetchContents, onCloseEdit }) => {
           placeholder="Enter URL"
           className="border-l-4 border-goDarkBlue rounded-lg focus:outline-0 px-4 py-2 placeholder:font-medium shadow-lg"
           value={content.url}
-          onChange={(event) => setUrl(event.target.value)}
+          onChange={(event) =>
+            setContent({
+              ...content,
+              url: event.target.value,
+            })
+          }
         />
+        <p className="italic text-sm -mt-2">
+          *Enter URL youtube.com/watch?v=<span className="text-red-600">CopyThis</span>
+        </p>
         <input
           type="file"
           name="thumbnail"
           id="thumbnail"
           required
           placeholder="Choose Thumbnail"
+          accept="image/*"
           className="border-l-4 border-goDarkBlue rounded-lg focus:outline-0 px-4 py-2 placeholder:font-medium shadow-lg"
-          onChange={(event) => setThumbnail(event.target.files[0])}
+          onChange={(event) => {
+            const img = event.target.files[0];
+            setImagePreview(URL.createObjectURL(img));
+            return setContent({
+              ...content,
+              thumbnail: img,
+            });
+          }}
         />
-        <p className="italic text-sm -mt-2">
-          *Enter URL youtube.com/watch?v=<span className="text-red-600">CopyThis</span>
-        </p>
+        {imagePreview ? (
+          <img src={imagePreview} alt="Thumbnail content" className="w-40 rounded-md" />
+        ) : (
+          <img
+            src={`${IMG_URL}/thumbnail/${content.thumbnail}`}
+            alt="Thumbnail content"
+            className="w-40 rounded-md"
+          />
+        )}
       </div>
       <button
         onClick={handleSubmit}
         className="mt-8 w-full text-center font-semibold text-base border-4 border-goDarkBlue bg-goDarkBlue hover:bg-[#0c2066] text-white rounded-lg shadow-lg py-1 mb-4"
       >
-        Upload
+        Confirm
       </button>
     </>
   );

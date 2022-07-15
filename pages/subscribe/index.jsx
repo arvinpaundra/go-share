@@ -14,7 +14,7 @@ const Subscribe = (props) => {
       <Head>
         <title>Subscribe now</title>
       </Head>
-      <Navbar id_creator={creator.id_creator} />
+      <Navbar creator={creator} />
       <main className="flex justify-center items-center min-h-screen bg-[#F9F9F9]">
         <SubscribeCard status={creator.status} onClose={onClose} />
       </main>

@@ -11,8 +11,8 @@ const EditContentModal = (props) => {
       onClose={() => onCloseEdit((prevState) => !prevState)}
     >
       <div className="inset-0 fixed bg-black bg-opacity-20" />
-      <Dialog.Panel className="fixed px-10 pb-4 pt-10 top-[20%] left-[30%] bg-[#F9F9F9] rounded-md drop-shadow-md w-[40%] h-fit">
-        <div className="mb-10 text-center text-xl bg-goGold absolute -top-[7%] left-[30%] px-9 py-2 rounded-lg drop-shadow-md font-semibold text-goDarkBlue">
+      <Dialog.Panel className="fixed px-10 pb-4 pt-10 top-[15%] left-[30%] bg-[#F9F9F9] rounded-md drop-shadow-md w-[40%] h-fit">
+        <div className="mb-10 text-center text-xl bg-goGold absolute -top-[5%] left-[30%] px-9 py-2 rounded-lg drop-shadow-md font-semibold text-goDarkBlue">
           <h2>Edit a Content</h2>
         </div>
         <EditContentForm

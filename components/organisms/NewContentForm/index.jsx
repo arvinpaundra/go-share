@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { setAddContent } from '../../../services/contents';
@@ -6,6 +7,7 @@ const NewContentForm = ({ id_creator, setFetchContents, onCloseAdd }) => {
   const [title, setTitle] = useState('');
   const [url, setUrl] = useState('');
   const [thumbnail, setThumbnail] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -56,6 +58,9 @@ const NewContentForm = ({ id_creator, setFetchContents, onCloseAdd }) => {
           value={url}
           onChange={(event) => setUrl(event.target.value)}
         />
+        <p className="italic text-sm -mt-2">
+          *Enter URL youtube.com/watch?v=<span className="text-red-600">CopyThis</span>
+        </p>
         <input
           type="file"
           name="thumbnail"
@@ -63,12 +68,15 @@ const NewContentForm = ({ id_creator, setFetchContents, onCloseAdd }) => {
           required
           placeholder="Choose Thumbnail"
           className="border-l-4 border-goDarkBlue rounded-lg focus:outline-0 px-4 py-2 placeholder:font-medium shadow-lg"
-          onChange={(event) => setThumbnail(event.target.files[0])}
+          onChange={(event) => {
+            const img = event.target.files[0];
+            setImagePreview(URL.createObjectURL(img));
+            return setThumbnail(event.target.files[0]);
+          }}
         />
-
-        <p className="italic text-sm -mt-2">
-          *Enter URL youtube.com/watch?v=<span className="text-red-600">CopyThis</span>
-        </p>
+        {imagePreview && (
+          <img src={imagePreview} alt="Content thumbnail" className="w-40 rounded-md" />
+        )}
       </div>
       <button
         onClick={handleSubmit}

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { Dialog } from '@headlessui/react';
 import { toast } from 'react-toastify';
 import { useState, useCallback, useEffect } from 'react';
@@ -7,8 +8,9 @@ import { getAllVouchersAPI } from '../../../services/vouchers';
 const SubscribeModal = ({ isOpen, onClose, id_creator }) => {
   const [nominal, setNominal] = useState('');
   const [payment, setPayment] = useState('');
-  const [evidence, setEvindence] = useState();
+  const [evidence, setEvindence] = useState(null);
   const [vouchers, setVouchers] = useState([]);
+  const [imagePreview, setImagePreview] = useState(null);
 
   const getAllVouchers = useCallback(async () => {
     try {
@@ -46,7 +48,8 @@ const SubscribeModal = ({ isOpen, onClose, id_creator }) => {
 
         setNominal('');
         setPayment('');
-        setEvindence();
+        setEvindence(null);
+        setImagePreview(null);
       }
     }
   };
@@ -104,13 +107,20 @@ const SubscribeModal = ({ isOpen, onClose, id_creator }) => {
             id="transaction_evidence"
             required
             className="hidden"
-            onChange={(event) => setEvindence(event.target.files[0])}
+            onChange={(event) => {
+              const img = event.target.files[0];
+              setImagePreview(URL.createObjectURL(img));
+              return setEvindence(img);
+            }}
             accept="image/png, image/jpg, image/jpeg"
           />
+          {imagePreview && (
+            <img src={imagePreview} alt="Transaction evidence" className="w-40 rounded-md" />
+          )}
           <button
             onClick={handleSubmit}
             type="submit"
-            className="mt-8 w-full text-center font-semibold text-base border-4 border-goDarkBlue bg-goDarkBlue hover:bg-[#0c2066] text-white rounded-lg shadow-lg py-1 mb-4"
+            className="mt-4 w-full text-center font-semibold text-base border-4 border-goDarkBlue bg-goDarkBlue hover:bg-[#0c2066] text-white rounded-lg shadow-lg py-1 mb-4"
           >
             Confirm
           </button>

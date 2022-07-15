@@ -1,13 +1,15 @@
+/* eslint-disable @next/next/no-img-element */
 import { Dialog } from '@headlessui/react';
 import Link from 'next/link';
-import { FaUserAstronaut } from 'react-icons/fa';
 import { useState } from 'react';
 import NavbarPoints from '../NavbarPoints';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 
+const IMG_URL = process.env.NEXT_PUBLIC_IMG;
+
 const Navbar = (props) => {
-  const { id_creator } = props;
+  const { creator } = props;
   const [isOpen, onClose] = useState(false);
 
   const router = useRouter();
@@ -29,7 +31,7 @@ const Navbar = (props) => {
               </a>
             </Link>
           </h1>
-          <NavbarPoints id_creator={id_creator} />
+          <NavbarPoints id_creator={creator.id_creator} />
           <ul className="flex justify-center items-center sm:gap-3 md:gap-8 text-base font-semibold tracking-wide text-white">
             <li>
               <Link href="/">
@@ -43,7 +45,11 @@ const Navbar = (props) => {
             </li>
             <li>
               <button onClick={() => onClose((prevState) => !prevState)}>
-                <FaUserAstronaut />
+                <img
+                  src={`${IMG_URL}/profiles/${creator.thumbnail}`}
+                  alt="Profile Pict"
+                  className="w-10 h-10 object-cover rounded-full"
+                />
               </button>
             </li>
           </ul>

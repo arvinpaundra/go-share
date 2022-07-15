@@ -50,7 +50,7 @@ const Discover = ({ contents, creator }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Navbar id_creator={creator.id_creator} />
+      <Navbar creator={creator} />
       <main className="bg-smoothblue min-h-screen flex justify-between gap-4 pt-20 pb-6 sm:px-4 md:px-24">
         <div className="w-2/3 flex flex-col sticky top-0">
           <iframe

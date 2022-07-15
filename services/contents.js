@@ -27,8 +27,14 @@ export const setAddContent = async (data) => {
   return callAPI({ url, data, method: 'POST', token: true });
 };
 
-export const setEditContent = (data, id_content) => {
+export const setEditContent = async (data, id_content) => {
   const url = `${ROOT_URL}/${API_VERSION}/contents/${id_content}`;
 
   return callAPI({ url, data, method: 'PUT', token: true });
+};
+
+export const deleteContent = async (id_content) => {
+  const url = `${ROOT_URL}/${API_VERSION}/contents/${id_content}`;
+
+  return callAPI({ url, method: 'DELETE', token: true });
 };

@@ -36,7 +36,7 @@ const ProfileContents = (props) => {
 
   return (
     <div className="pt-40 pb-6 px-24">
-      <h5 className="ml-40 text-lg font-normal italic">{email}</h5>
+      <h5 className="ml-40 mt-1 text-lg font-normal italic">{email}</h5>
       <button
         onClick={() => onCloseAdd((prevState) => !prevState)}
         className="mt-16 mb-4 bg-goGold font-semibold text-goDarkBlue py-1 px-4 rounded-md"
@@ -52,11 +52,10 @@ const ProfileContents = (props) => {
           <ProfileContentItem
             onCloseEdit={onCloseEdit}
             key={content.id_content}
-            length={contents.length}
             title={content.title}
-            url={content.url}
             id_content={content.id_content}
             thumbnail={content.thumbnail}
+            setFetchContents={setFetchContents}
           />
         ))}
       </div>
